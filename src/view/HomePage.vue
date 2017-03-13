@@ -2,7 +2,7 @@
   <div class="">
   	<div class="alert-notification">
       <el-alert
-        title='这特么只是一个测试用的东西。'
+        title='首页'
         :showIcon='true'>
       </el-alert>
     </div>
@@ -16,6 +16,8 @@
   import 'echarts/lib/component/tooltip'
   import 'echarts/lib/component/title'
   import 'echarts/lib/chart/pie'
+
+  import { getTypes } from '../api'
 
   import { Alert } from 'element-ui'
   import Vue from 'vue'
@@ -31,40 +33,42 @@
       const tableEle = this.$refs.chartsTable
       const myChart = echarts.init(tableEle)
 
-      myChart.setOption({
-          title : {
-              text: 'ALL CURRENT EXAMPLES',
-              x:'center'
-          },
-          tooltip : {
-              trigger: 'item',
-              formatter: "{a} <br/>{b} : {c} ({d}%)"
-          },
-          legend: {
-              orient: 'vertical',
-              left: 'left',
-              data: ['Element', 'Echarts']
-          },
-          series : [
-              {
-                  name: '目前情况',
-                  type: 'pie',
-                  radius : '55%',
-                  center: ['50%', '50%'],
-                  data:[
-                      {value:5, name:'Element'},
-                      {value:4, name:'Echarts'},
-                  ],
-                  itemStyle: {
-                      emphasis: {
-                          shadowBlur: 10,
-                          shadowOffsetX: 0,
-                          shadowColor: 'rgba(0, 0, 0, 0.5)'
-                      }
-                  }
-              }
-          ]
-      });
+      getTypes(data => {
+        myChart.setOption({
+            title : {
+                text: 'ALL CURRENT EXAMPLES',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['Element', 'Echarts']
+            },
+            series : [
+                {
+                    name: '目前情况',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '50%'],
+                    data:[
+                        {value:data.elements, name:'Element'},
+                        {value:data.echarts, name:'Echarts'},
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        });
+      })
     }
   }
 </script>
